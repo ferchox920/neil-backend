@@ -8,7 +8,8 @@ const USER = sequelize.define(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: uuidv4, // No es necesario usar una función anónima aquí
+      defaultValue: uuidv4,
+      unique: true,
     },
     profile_picture: {
       type: DataTypes.STRING,

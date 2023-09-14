@@ -33,6 +33,7 @@ userRoutes.post("/", async (req, res) => {
   const user = req.body;
 
   try {
+    console.log(req.files);
     const data = await createUser(user);
     return res.status(200).json(data);
   } catch (error) {

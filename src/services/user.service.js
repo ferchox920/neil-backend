@@ -1,10 +1,10 @@
-import e from "express";
 import USER from "../database/user.entity.js";
 import bcrypt from "bcrypt";
 
 export async function createUser(userData) {
   try {
     const { password, email } = userData;
+
 
     const user = await findUserByEmail(email)
     if (user) {

@@ -30,13 +30,17 @@ productRoutes.get("/:id", async (req, res) => {
 
 productRoutes.post("/", async (req, res) => {
   const product = req.body;
+  const image =  req.files.image; 
 
   try {
-    const data = await createProduct(product);
-    return res.status(200).json(data);
+    const data = await createProduct(product, image);
+
+    return res.status(201).json(data); 
   } catch (error) {
-    return res.status(500).json({ data: error.message });
+    console.error(error);
+    return res.status(500).json({ error: "Error interno del servidor.", details: error.message });
   }
 });
+
 
 export default productRoutes;

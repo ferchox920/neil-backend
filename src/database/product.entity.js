@@ -1,14 +1,22 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const PRODUCT = sequelize.define(
   "product",
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       primaryKey: true,
-      allowNull: false,
+      defaultValue: uuidv4,
       unique: true,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+    },
+    imageUrlSecurity: {
+      type: DataTypes.STRING,
+
     },
     name: {
       type: DataTypes.STRING,

@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import productRoutes from "../routes/product.route.js";
 import userRoutes from "../routes/user.route.js";
+import fileUpload from "express-fileupload";
 
 config();
 
@@ -28,8 +29,14 @@ expressApp.use(
 expressApp.use(express.json()); // Utiliza express.json() para analizar JSON
 expressApp.use(express.urlencoded({ extended: true })); // Utiliza express.urlencoded() para analizar formularios
 expressApp.use(cookieParser());
-expressApp.use(morgan("dev"));
 
+expressApp.use(morgan("dev"));
+expressApp.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+  useTempFiles: true,
+  tempFileDir: './uploads'
+}
+));
 // RUTAS
 expressApp.use('/product', productRoutes);
 expressApp.use('/user', userRoutes);
