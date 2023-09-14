@@ -1,0 +1,42 @@
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
+import { v4 as uuidv4 } from 'uuid';
+
+const USER = sequelize.define(
+  "User",
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: uuidv4, // No es necesario usar una función anónima aquí
+    },
+    profile_picture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
+    fullname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM('active', 'inactive'),
+      defaultValue: 'inactive',
+    },
+  },
+  {
+    timestamps: false,
+    modelName: 'User', 
+  }
+);
+
+export default USER;

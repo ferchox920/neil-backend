@@ -2,8 +2,6 @@ import { config } from "dotenv";
 import httpServer from "./config/http.js";
 import sequelize from "./config/db.js";
 
-
-
 config();
 
 async function bootstrap() {
