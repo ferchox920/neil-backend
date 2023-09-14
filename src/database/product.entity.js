@@ -8,21 +8,23 @@ const PRODUCT = sequelize.define(
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
-      unique:true
+      unique: true,
     },
     name: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     price: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING, // Asegúrate de que el tipo de datos sea el correcto para el precio
+    },
+    quantity: {
+      type: DataTypes.STRING, // Asegúrate de que el tipo de datos sea el correcto para la cantidad
     },
     status: {
       type: DataTypes.ENUM,
       values: ["active", "inactive"],
       defaultValue: "active",
-    }
-
+    },
   },
   {
     timestamps: false,
