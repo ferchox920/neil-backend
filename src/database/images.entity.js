@@ -12,10 +12,10 @@ const IMAGE = sequelize.define(
       unique: true,
     },
     productId: {
-      type: DataTypes.UUID, // Esto debe coincidir con el tipo de ID en tu modelo de Producto
+      type: DataTypes.UUID,
       allowNull: false,
     },
-    imageUrl: {
+    publicId: {
       type: DataTypes.STRING,
     },
     imageUrlSecurity: {
