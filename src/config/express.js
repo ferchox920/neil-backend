@@ -31,12 +31,7 @@ expressApp.use(express.urlencoded({ extended: true })); // Utiliza express.urlen
 expressApp.use(cookieParser());
 
 expressApp.use(morgan("dev"));
-expressApp.use(fileUpload({
-  limits: { fileSize: 50 * 1024 * 1024 },
-  useTempFiles: true,
-  tempFileDir: './uploads'
-}
-));
+
 // RUTAS
 expressApp.use('/product', productRoutes);
 expressApp.use('/user', userRoutes);

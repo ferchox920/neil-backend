@@ -11,7 +11,12 @@ const USER = sequelize.define(
       defaultValue: uuidv4,
       unique: true,
     },
-    profile_picture: {
+    profilePicture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
+    profilePictureSecurity: {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: null,

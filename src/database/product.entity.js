@@ -11,7 +11,7 @@ const PRODUCT = sequelize.define(
       defaultValue: uuidv4,
       unique: true,
     },
-    imageUrl: {
+    imageId: {
       type: DataTypes.STRING,
     },
     imageUrlSecurity: {

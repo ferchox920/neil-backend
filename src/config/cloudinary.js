@@ -22,3 +22,8 @@ export async function uploadImageProfile(file) {
   });
   return result;
 }
+
+export async function deleteImageProduct(id) {
+    const result = await cloudinary.uploader.destroy(id);
+  return result;
+}
