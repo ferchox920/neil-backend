@@ -18,7 +18,7 @@ const IMAGE = sequelize.define(
     },
     type: {
       type: DataTypes.ENUM,
-      values: [ImageType.PRODUCT, ImageType.USER],
+      values: [ImageType.PRODUCT, ImageType.USER], // Usa la constante ImageType aquí
       allowNull: false,
     },
     publicId: {

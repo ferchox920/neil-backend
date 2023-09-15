@@ -5,25 +5,39 @@ import {
 } from "../config/cloudinary.js";
 import IMAGE from "../database/images.entity.js";
 import PRODUCT from "../database/product.entity.js";
+import fs from "fs-extra";
 
 export async function createProduct(productData, image) {
   const { code } = productData;
 
   if (!code) {
-    throw new Error("El codigo es obligatorio");
+    try {
+      await fs.unlink(image.tempFilePath);
+    } catch (unlinkError) {
+      console.error("Error al eliminar el archivo:", unlinkError);
+    }
+    throw new Error("El código es obligatorio");
   }
 
   try {
-    const existingCode = await PRODUCT.findOne({
-      where: {
-        code: code,
-      },
-    });
-    if (existingCode) {
-      throw new Error("El codigo ya existe");
-    }
-    const newProduct = await PRODUCT.create(productData);
+    if (code.trim()) {
+      const existingCode = await PRODUCT.findOne({
+        where: {
+          code,
+        },
+      });
 
+      if (existingCode) {
+        try {
+          await fs.unlink(image.tempFilePath);
+        } catch (unlinkError) {
+          console.error("Error al eliminar el archivo:", unlinkError);
+        }
+        throw new Error("El código ya existe");
+      }
+    }
+
+    const newProduct = await PRODUCT.create(productData);
 
     const imagesArray = Array.isArray(image) ? image : [image];
 
@@ -34,17 +48,13 @@ export async function createProduct(productData, image) {
         productId: newProduct.id,
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
-        type:ImageType.PRODUCT
+        type: ImageType.PRODUCT,
       });
     });
 
     const newImages = await Promise.all(newImagesPromises);
 
-
-    
     await newProduct.addImages(newImages);
-
-  
     await newProduct.save();
 
     return newProduct;
@@ -54,7 +64,6 @@ export async function createProduct(productData, image) {
   }
 }
 
-
 export async function addImagesToProduct(productId, imageFiles) {
   try {
     const product = await PRODUCT.findByPk(productId);
@@ -62,6 +71,7 @@ export async function addImagesToProduct(productId, imageFiles) {
     if (!product) {
       throw new Error("Producto no encontrado");
     }
+
     const imagesArray = Array.isArray(imageFiles) ? imageFiles : [imageFiles];
 
     const newImagesPromises = imagesArray.map(async (imageFile) => {
@@ -71,7 +81,7 @@ export async function addImagesToProduct(productId, imageFiles) {
         productId: product.id,
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
-        type:ImageType.PRODUCT
+        type: ImageType.PRODUCT,
       });
     });
 
@@ -79,17 +89,17 @@ export async function addImagesToProduct(productId, imageFiles) {
 
     await product.addImages(newImages);
 
-    const updatedProduct = await PRODUCT.findByPk(productId, {
-      include: "images",
-    });
-
-    return updatedProduct;
+    return product;
   } catch (error) {
     console.error("Error al agregar imágenes al producto:", error);
+
+    for (const imageFile of imageFiles) {
+      await fs.unlink(imageFile.tempFilePath);
+    }
+
     throw new Error("Error al agregar imágenes al producto: " + error.message);
   }
 }
-
 export async function deleteProductImage(productId, imageId) {
   try {
     const product = await PRODUCT.findByPk(productId);
@@ -104,7 +114,6 @@ export async function deleteProductImage(productId, imageId) {
       throw new Error("Imagen no encontrada");
     }
 
-
     await deleteImageProduct(image.publicId);
 
     await image.destroy();
@@ -112,7 +121,9 @@ export async function deleteProductImage(productId, imageId) {
     return "Imagen eliminada correctamente";
   } catch (error) {
     console.error("Error al eliminar la imagen del producto:", error);
-    throw new Error("Error al eliminar la imagen del producto: " + error.message);
+    throw new Error(
+      "Error al eliminar la imagen del producto: " + error.message
+    );
   }
 }
 
@@ -127,7 +138,6 @@ export async function getProduct(id) {
     throw new Error("Error al obtener el producto: " + error.message);
   }
 }
-
 
 export async function getAllProducts() {
   try {

@@ -35,7 +35,7 @@ productRoutes.post(
   }
 );
 
-productRoutes.post('/addImages/:productId/',fileUpload(uploadOptions), async (req, res) => {
+productRoutes.post('/:productId/images',fileUpload(uploadOptions), async (req, res) => {
   const productId = req.params.productId;
   const imageFiles = req.files?.images; // Asegúrate de que el nombre del campo coincida con lo que esperas
 
