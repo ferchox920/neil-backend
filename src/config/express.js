@@ -5,16 +5,15 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import productRoutes from "../routes/product.route.js";
 import userRoutes from "../routes/user.route.js";
-import fileUpload from "express-fileupload";
 
 config();
 
 const expressApp = express();
 
-// TODO: Investigar sobre cors
+
 expressApp.use(
   cors({
-    origin: "*", // Solo permitir llamadas desde http://localhost:3000
+    origin: "*",
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -22,12 +21,12 @@ expressApp.use(
       "pos",
       "confirm",
     ],
-    methods: ["GET", "PUT", "POST", "DELETE"], // Agregamos los métodos permitidos
+    methods: ["GET", "PUT", "POST", "DELETE"], 
   })
 );
 
-expressApp.use(express.json()); // Utiliza express.json() para analizar JSON
-expressApp.use(express.urlencoded({ extended: true })); // Utiliza express.urlencoded() para analizar formularios
+expressApp.use(express.json()); 
+expressApp.use(express.urlencoded({ extended: true })); 
 expressApp.use(cookieParser());
 
 expressApp.use(morgan("dev"));
