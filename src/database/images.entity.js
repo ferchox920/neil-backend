@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 import { v4 as uuidv4 } from 'uuid';
+import ImageType from "../common/type-image-enum.js";
 
 const IMAGE = sequelize.define(
   "image",
@@ -13,6 +14,11 @@ const IMAGE = sequelize.define(
     },
     productId: {
       type: DataTypes.UUID,
+      allowNull: false,
+    },
+    type: {
+      type: DataTypes.ENUM,
+      values: [ImageType.PRODUCT, ImageType.USER],
       allowNull: false,
     },
     publicId: {

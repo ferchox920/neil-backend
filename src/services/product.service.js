@@ -1,3 +1,4 @@
+import ImageType from "../common/type-image-enum.js";
 import {
   deleteImageProduct,
   uploadImageProduct,
@@ -33,6 +34,7 @@ export async function createProduct(productData, image) {
         productId: newProduct.id,
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
+        type:ImageType.PRODUCT
       });
     });
 
@@ -69,6 +71,7 @@ export async function addImagesToProduct(productId, imageFiles) {
         productId: product.id,
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
+        type:ImageType.PRODUCT
       });
     });
 
