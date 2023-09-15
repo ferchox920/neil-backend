@@ -12,7 +12,7 @@ productRoutes.post(
   "/",
   fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
-    useTempFiles: true,
+    useTempFiles: false,
     tempFileDir: "./uploads",
   }),
   async (req, res) => {

@@ -1,10 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 import { v4 as uuidv4 } from 'uuid';
-import IMAGE from "./images,entity.js";
 
-const PRODUCT = sequelize.define(
-  "product",
+const IMAGE = sequelize.define(
+  "image",
   {
     id: {
       type: DataTypes.UUID,
@@ -12,20 +11,15 @@ const PRODUCT = sequelize.define(
       defaultValue: uuidv4,
       unique: true,
     },
-    name: {
-      type: DataTypes.STRING,
+    productId: {
+      type: DataTypes.UUID, // Esto debe coincidir con el tipo de ID en tu modelo de Producto
       allowNull: false,
     },
-    price: {
+    imageUrl: {
       type: DataTypes.STRING,
     },
-    quantity: {
+    imageUrlSecurity: {
       type: DataTypes.STRING,
-    },
-    status: {
-      type: DataTypes.ENUM,
-      values: ["active", "inactive"],
-      defaultValue: "active",
     },
   },
   {
@@ -33,6 +27,4 @@ const PRODUCT = sequelize.define(
   }
 );
 
-PRODUCT.hasMany(IMAGE, { foreignKey: 'productId' });
-
-export default PRODUCT;
+export default IMAGE;

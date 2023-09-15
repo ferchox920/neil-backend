@@ -2,6 +2,7 @@ import {
   deleteImageProduct,
   uploadImageProduct,
 } from "../config/cloudinary.js";
+import IMAGE from "../database/images,entity.js";
 import PRODUCT from "../database/product.entity.js";
 
 export async function createProduct(productData, image) {
@@ -10,9 +11,16 @@ export async function createProduct(productData, image) {
 
     if (image) {
       const imageUploadResult = await uploadImageProduct(image.tempFilePath);
-      newProduct.imageId = imageUploadResult.public_id;
-      newProduct.imageUrlSecurity = imageUploadResult.secure_url;
 
+      const newImage = await IMAGE.create({
+        productId: newProduct.id,
+        imageUrl: imageUploadResult.secure_url,
+        imageUrlSecurity: imageUploadResult.secure_url,
+      });
+
+      await newProduct.addImage(newImage);
+
+      // Guardar los cambios en el producto
       await newProduct.save();
     }
 
@@ -35,7 +43,9 @@ export async function getProduct(id) {
 
 export async function getAllProducts() {
   try {
-    const products = await PRODUCT.findAll();
+    const products = await PRODUCT.findAll({
+      include: "images",
+    });
     return products;
   } catch (error) {
     console.error("Error al obtener todos los productos:", error);
