@@ -10,8 +10,6 @@ import {
 import fileUpload from "express-fileupload";
 import { uploadOptions } from "../common/utils.js";
 
-
-
 const productRoutes = Router();
 productRoutes.post(
   "/",
