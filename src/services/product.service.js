@@ -6,6 +6,8 @@ import {
 import IMAGE from "../database/images.entity.js";
 import PRODUCT from "../database/product.entity.js";
 import fs from "fs-extra";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export async function createProduct(productData, image) {
   const { code } = productData;
@@ -37,7 +39,18 @@ export async function createProduct(productData, image) {
       }
     }
 
-    const newProduct = await PRODUCT.create(productData);
+    // Generar un nuevo ID único
+    const newProductId = uuidv4();
+
+    const newProduct = await PRODUCT.create({
+      id: newProductId,
+      category: productData.category,
+      code: productData.code,
+      name: productData.name,
+      price: productData.price,
+      quantity: productData.quantity,
+      status: productData.status,
+    });
 
     const imagesArray = Array.isArray(image) ? image : [image];
 
@@ -45,7 +58,8 @@ export async function createProduct(productData, image) {
       const imageUploadResult = await uploadImageProduct(imageFile);
 
       return IMAGE.create({
-        productId: newProduct.id,
+        id: uuidv4(), // Generar un nuevo ID único para la imagen
+        productId: newProductId, // Usar el ID del nuevo producto
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
         type: ImageType.PRODUCT,
@@ -60,6 +74,7 @@ export async function createProduct(productData, image) {
     return newProduct;
   } catch (error) {
     console.error("Error al crear el producto:", error);
+    await fs.unlink(image.tempFilePath);
     throw new Error("Error al crear el producto: " + error.message);
   }
 }

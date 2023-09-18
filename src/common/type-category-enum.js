@@ -1,6 +1,6 @@
 const CategoryType = {
     NINTENDO: "NINTENDO",
-    ATARY: "ATARY",
+    ATARI: "ATARI",
     PLAYSTATION: "PLAYSTATION",
   };
   

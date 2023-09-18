@@ -10,27 +10,28 @@ const PRODUCT = sequelize.define(
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: uuidv4,
+      defaultValue: uuidv4(),
       unique: true,
     },
     category: {
-      type: DataTypes.STRING,
-      values: [CategoryType.ATARY, CategoryType.NINTENDO,CategoryType.PLAYSTATION],
-      nullable: false,
-    },
-    code: {
       type: DataTypes.ENUM,
-      nullable: false,
+      values: [CategoryType.NINTENDO, CategoryType.PLAYSTATION , CategoryType.ATARI],
+      allowNull: false,
+    },
+
+    code: {
+      type: DataTypes.STRING, // Cambiado a STRING ya que parece ser un código alfanumérico
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     price: {
-      type: DataTypes.STRING,
+      type: DataTypes.FLOAT, // Cambiado a FLOAT ya que el precio generalmente es un número decimal
     },
     quantity: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER, // Cambiado a INTEGER ya que la cantidad generalmente es un número entero
     },
     status: {
       type: DataTypes.ENUM,
