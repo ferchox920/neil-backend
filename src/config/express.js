@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import productRoutes from "../routes/product.route.js";
 import userRoutes from "../routes/user.route.js";
+import authRoutes from "../routes/auth.route.js";
 
 config();
 
@@ -34,6 +35,7 @@ expressApp.use(morgan("dev"));
 // RUTAS
 expressApp.use('/product', productRoutes);
 expressApp.use('/user', userRoutes);
+expressApp.use('/auth', authRoutes);
 
 expressApp.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "*");

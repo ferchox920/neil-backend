@@ -8,11 +8,14 @@ import {
 } from "../services/user.service.js";
 import { uploadOptions } from "../common/utils.js";
 import fileUpload from "express-fileupload";
+import { authenticateJWT, isAdmin } from "../middleware/middleware.js";
 
 const userRoutes = Router();
 
-userRoutes.get("/", async (req, res) => {
+userRoutes.get("/", authenticateJWT, isAdmin, async (req, res) => {
   try {
+    console.log("res.user");
+    console.log(req.user.email);
     const data = await getAllUser();
     if (!data) return res.status(400).json("Base de datos vacia");
     return res.status(200).json(data);
@@ -21,7 +24,7 @@ userRoutes.get("/", async (req, res) => {
   }
 });
 
-userRoutes.get("/:id", async (req, res) => {
+userRoutes.get("/:id", authenticateJWT, async (req, res) => {
   const { id } = req.params;
   try {
     const data = await findUserById(id);
@@ -46,6 +49,7 @@ userRoutes.post("/", fileUpload(uploadOptions), async (req, res) => {
 
 userRoutes.put(
   "/:userId/profile-image",
+  authenticateJWT,
   fileUpload(uploadOptions),
   async (req, res) => {
     const { userId } = req.params;
@@ -59,7 +63,7 @@ userRoutes.put(
   }
 );
 
-userRoutes.put("/:id", async (req, res) => {
+userRoutes.put("/:id", authenticateJWT, async (req, res) => {
   const { id } = req.params;
 
   const updatedData = req.body;
@@ -71,7 +75,7 @@ userRoutes.put("/:id", async (req, res) => {
   }
 });
 
-userRoutes.delete("/:id", async (req, res) => {
+userRoutes.delete("/:id", authenticateJWT, isAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {

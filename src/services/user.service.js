@@ -1,6 +1,7 @@
 import { uploadImageProfile } from "../config/cloudinary.js";
 import USER from "../database/user.entity.js";
 import bcrypt from "bcrypt";
+import { generateToken } from "./jwt.service.js";
 
 export async function createUser(userData, image) {
   try {
@@ -28,7 +29,8 @@ export async function createUser(userData, image) {
       profilePublicId: imageUploadResult ? imageUploadResult.public_id : null,
     });
 
-    return newUser;
+    const token =  generateToken(newUser)
+    return {newUser, token};
   } catch (error) {
     throw new Error("Error al crear el usuario: " + error.message);
   }

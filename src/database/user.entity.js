@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const USER = sequelize.define(
   "User",
@@ -21,7 +21,11 @@ const USER = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
-
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     fullname: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -36,13 +40,13 @@ const USER = sequelize.define(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('active', 'inactive'),
-      defaultValue: 'inactive',
+      type: DataTypes.ENUM("active", "inactive"),
+      defaultValue: "inactive",
     },
   },
   {
     timestamps: false,
-    modelName: 'User', 
+    modelName: "User",
   }
 );
 
