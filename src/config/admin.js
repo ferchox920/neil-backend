@@ -7,16 +7,16 @@ dotenv.config();
 
 async function createAdminIfNotExists() {
   try {
-    // Verificar si ya existe un administrador
+ 
     const adminExists = await USER.findOne({ where: { isAdmin: true } });
 
     if (!adminExists) {
-      // Crear un nuevo administrador utilizando los valores del archivo .env
+
       await USER.create({
         isAdmin: true,
         fullname: process.env.ADMIN_FULLNAME,
         email: process.env.ADMIN_EMAIL,
-        password: await  bcrypt.hash(process.env.ADMIN_PASSWORD, 10), // Cifra la contraseña
+        password: await  bcrypt.hash(process.env.ADMIN_PASSWORD, 10), 
         status: "active",
       });
 

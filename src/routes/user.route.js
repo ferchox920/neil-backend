@@ -14,8 +14,6 @@ const userRoutes = Router();
 
 userRoutes.get("/", authenticateJWT, isAdmin, async (req, res) => {
   try {
-    console.log("res.user");
-    console.log(req.user.email);
     const data = await getAllUser();
     if (!data) return res.status(400).json("Base de datos vacia");
     return res.status(200).json(data);
@@ -39,7 +37,6 @@ userRoutes.post("/", fileUpload(uploadOptions), async (req, res) => {
   const user = req.body;
   const img = req.files?.image;
   try {
-    console.log(req.files);
     const data = await createUser(user, img);
     return res.status(200).json(data);
   } catch (error) {

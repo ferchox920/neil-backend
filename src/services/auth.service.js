@@ -1,9 +1,7 @@
 import USER from "../database/user.entity.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { generateToken } from "./jwt.service.js";
 
-const secretKey = process.env.JWT_SECRET_KEY;
 export async function login(email, password) {
   try {
     const user = await USER.findOne({ where: { email } });
