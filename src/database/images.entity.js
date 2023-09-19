@@ -16,11 +16,7 @@ const IMAGE = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
-    type: {
-      type: DataTypes.ENUM,
-      values: [ImageType.PRODUCT, ImageType.USER], // Usa la constante ImageType aquí
-      allowNull: false,
-    },
+
     publicId: {
       type: DataTypes.STRING,
     },

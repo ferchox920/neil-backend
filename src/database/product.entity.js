@@ -15,13 +15,17 @@ const PRODUCT = sequelize.define(
     },
     category: {
       type: DataTypes.ENUM,
-      values: [CategoryType.NINTENDO, CategoryType.PLAYSTATION , CategoryType.ATARI],
+      values: [CategoryType.NINTENDO, CategoryType.PLAYSTATION , CategoryType.ATARI, CategoryType.SEGA],
       allowNull: false,
     },
     imageProfile:{
       type: DataTypes.STRING,
     },
 
+    description:{
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     code: {
       type: DataTypes.STRING, 
       allowNull: false,
