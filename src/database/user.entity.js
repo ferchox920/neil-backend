@@ -16,11 +16,12 @@ const USER = sequelize.define(
       allowNull: true,
       defaultValue: null,
     },
-    profilePictureSecurity: {
+    profilePublicId: {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: null,
     },
+
     fullname: {
       type: DataTypes.STRING,
       allowNull: false,

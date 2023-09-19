@@ -16,7 +16,6 @@ const IMAGE = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
-
     publicId: {
       type: DataTypes.STRING,
     },
