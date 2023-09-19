@@ -18,9 +18,12 @@ const PRODUCT = sequelize.define(
       values: [CategoryType.NINTENDO, CategoryType.PLAYSTATION , CategoryType.ATARI],
       allowNull: false,
     },
+    imageProfile:{
+      type: DataTypes.STRING,
+    },
 
     code: {
-      type: DataTypes.STRING, // Cambiado a STRING ya que parece ser un código alfanumérico
+      type: DataTypes.STRING, 
       allowNull: false,
     },
     name: {

@@ -6,7 +6,7 @@ import {
 import IMAGE from "../database/images.entity.js";
 import PRODUCT from "../database/product.entity.js";
 import fs from "fs-extra";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 
 export async function createProduct(productData, image) {
@@ -22,24 +22,22 @@ export async function createProduct(productData, image) {
   }
 
   try {
-    if (code.trim()) {
-      const existingCode = await PRODUCT.findOne({
-        where: {
-          code,
-        },
-      });
+    const existingCode = await PRODUCT.findOne({
+      where: {
+        code,
+      },
+    });
 
-      if (existingCode) {
-        try {
-          await fs.unlink(image.tempFilePath);
-        } catch (unlinkError) {
-          console.error("Error al eliminar el archivo:", unlinkError);
-        }
-        throw new Error("El código ya existe");
+    if (existingCode) {
+      try {
+        await fs.unlink(image.tempFilePath);
+      } catch (unlinkError) {
+        console.error("Error al eliminar el archivo:", unlinkError);
       }
+      throw new Error("El código ya existe");
     }
 
-    // Generar un nuevo ID único
+    const imagesArray = Array.isArray(image) ? image : [image];
     const newProductId = uuidv4();
 
     const newProduct = await PRODUCT.create({
@@ -52,14 +50,17 @@ export async function createProduct(productData, image) {
       status: productData.status,
     });
 
-    const imagesArray = Array.isArray(image) ? image : [image];
-
-    const newImagesPromises = imagesArray.map(async (imageFile) => {
+    const newImagesPromises = imagesArray.map(async (imageFile, index) => {
       const imageUploadResult = await uploadImageProduct(imageFile);
 
+      if (index === 0) {
+        newProduct.imageProfile = imageUploadResult.secure_url;
+        await newProduct.save();
+      }
+
       return IMAGE.create({
-        id: uuidv4(), // Generar un nuevo ID único para la imagen
-        productId: newProductId, // Usar el ID del nuevo producto
+        id: uuidv4(),
+        relationId: newProductId,
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
         type: ImageType.PRODUCT,
@@ -69,7 +70,6 @@ export async function createProduct(productData, image) {
     const newImages = await Promise.all(newImagesPromises);
 
     await newProduct.addImages(newImages);
-    await newProduct.save();
 
     return newProduct;
   } catch (error) {
@@ -79,11 +79,13 @@ export async function createProduct(productData, image) {
   }
 }
 
+
 export async function addImagesToProduct(productId, imageFiles) {
   try {
     const product = await PRODUCT.findByPk(productId);
 
     if (!product) {
+      await fs.unlink(imageFiles.tempFilePath);
       throw new Error("Producto no encontrado");
     }
 
@@ -93,7 +95,7 @@ export async function addImagesToProduct(productId, imageFiles) {
       const imageUploadResult = await uploadImageProduct(imageFile);
 
       return IMAGE.create({
-        productId: product.id,
+        relationId: product.id,
         publicId: imageUploadResult.public_id,
         imageUrlSecurity: imageUploadResult.secure_url,
         type: ImageType.PRODUCT,
@@ -176,7 +178,7 @@ export async function deleteProduct(productId) {
 
     const productImages = await IMAGE.findAll({
       where: {
-        productId: product.id,
+        relationId: product.id,
       },
     });
 

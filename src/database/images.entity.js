@@ -12,7 +12,7 @@ const IMAGE = sequelize.define(
       defaultValue: uuidv4,
       unique: true,
     },
-    productId: {
+    relationId: {
       type: DataTypes.UUID,
       allowNull: false,
     },
