@@ -47,6 +47,7 @@ export async function createProduct(productData, image) {
       price: productData.price,
       quantity: productData.quantity,
       status: productData.status,
+      description: productData.description,
     });
 
     const newImagesPromises = imagesArray.map(async (imageFile, index) => {

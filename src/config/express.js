@@ -6,6 +6,7 @@ import { config } from "dotenv";
 import productRoutes from "../routes/product.route.js";
 import userRoutes from "../routes/user.route.js";
 import authRoutes from "../routes/auth.route.js";
+import orderRouter from "../routes/order.route.js";
 
 config();
 
@@ -36,6 +37,7 @@ expressApp.use(morgan("dev"));
 expressApp.use('/product', productRoutes);
 expressApp.use('/user', userRoutes);
 expressApp.use('/auth', authRoutes);
+expressApp.use('/order', orderRouter);
 
 expressApp.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "*");
