@@ -33,11 +33,10 @@ userRoutes.get("/:id", authenticateJWT, async (req, res) => {
   }
 });
 
-userRoutes.post("/", fileUpload(uploadOptions), async (req, res) => {
+userRoutes.post("/", async (req, res) => {
   const user = req.body;
-  const img = req.files?.image;
   try {
-    const data = await createUser(user, img);
+    const data = await createUser(user);
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ data: error.message });

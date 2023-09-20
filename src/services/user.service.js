@@ -29,19 +29,14 @@ export async function createUser(userData, image) {
     //* es el nivel de trabajo en crear el "hash". 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    let imageUploadResult;
-
-    if (image) {
-      // Sube la imagen de perfil si se proporciona una
-      imageUploadResult = await uploadImageProfile(image);
-    }
+   
 
     // Crea un nuevo usuario en la base de datos
     const newUser = await USER.create({
       ...userData,
       password: hashedPassword,
-      profilePicture: imageUploadResult ? imageUploadResult.secure_url : null,
-      profilePublicId: imageUploadResult ? imageUploadResult.public_id : null,
+      profilePicture:  null,
+      profilePublicId:  null,
     });
 
     // Genera un token JWT para el nuevo usuario

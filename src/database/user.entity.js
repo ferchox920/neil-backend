@@ -14,12 +14,10 @@ const USER = sequelize.define(
     },
     profilePicture: {
       type: DataTypes.STRING,
-      allowNull: true,
       defaultValue: null,
     },
     profilePublicId: {
       type: DataTypes.STRING,
-      allowNull: true,
       defaultValue: null,
     },
     isAdmin: {
