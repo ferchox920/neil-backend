@@ -1,16 +1,7 @@
-// Importa la función para subir la imagen de perfil desde el archivo de configuración
 import { uploadImageProfile } from "../config/cloudinary.js";
-
-// Importa el modelo de datos de usuario desde el archivo '../database/user.entity.js'
 import USER from "../database/user.entity.js";
-
-// Importa el módulo 'bcrypt' para el cifrado de contraseñas
 import bcrypt from "bcrypt";
-
-// Importa la función 'generateToken' desde el archivo './jwt.service.js'
 import { generateToken } from "./jwt.service.js";
-
-// Función para crear un nuevo usuario
 export async function createUser(userData, image) {
   try {
     const { password, email } = userData;
@@ -18,20 +9,14 @@ export async function createUser(userData, image) {
     if(userData.isAdmin){
       throw new Error("Acceso no autorizado para administradores");
     }
-    // Verifica si el usuario ya existe
+    
     const user = await findUserByEmail(email);
     if (user) {
       throw new Error("El usuario ya existe");
     }
-
-    // Hashea la contraseña // *Hashing es un proceso criptográfico que convierte una cadena 
-    //* de caracteres, como una contraseña, en una representación fija de longitud fija llamada "hash" y 10
-    //* es el nivel de trabajo en crear el "hash". 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-   
 
-    // Crea un nuevo usuario en la base de datos
     const newUser = await USER.create({
       ...userData,
       password: hashedPassword,
@@ -39,13 +24,12 @@ export async function createUser(userData, image) {
       profilePublicId:  null,
     });
 
-    // Genera un token JWT para el nuevo usuario
+  
     const token = generateToken(newUser);
-    
-    // Devuelve el nuevo usuario y el token generado
+
     return { newUser, token };
   } catch (error) {
-    // Lanza un error en caso de problemas
+
     throw new Error("Error al crear el usuario: " + error.message);
   }
 }

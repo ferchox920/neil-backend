@@ -22,8 +22,8 @@ const PRODUCT = sequelize.define(
       type: DataTypes.STRING,
     },
 
-    description:{
-      type: DataTypes.STRING,
+    description: {
+      type: DataTypes.TEXT, 
       allowNull: false,
     },
     code: {
@@ -35,10 +35,10 @@ const PRODUCT = sequelize.define(
       allowNull: false,
     },
     price: {
-      type: DataTypes.FLOAT, // Cambiado a FLOAT ya que el precio generalmente es un número decimal
+      type: DataTypes.FLOAT, 
     },
     quantity: {
-      type: DataTypes.INTEGER, // Cambiado a INTEGER ya que la cantidad generalmente es un número entero
+      type: DataTypes.INTEGER,
     },
     status: {
       type: DataTypes.ENUM,
